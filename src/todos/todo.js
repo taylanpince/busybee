@@ -19,14 +19,14 @@ class Todo extends Component {
     }
 
     const deleteTodo = (event) => {
-       firebase.remove(`/todos/${id}`)
+      firebase.remove(`/todos/${id}`)
     }
 
     return (
       <Card>
         <CardBody>
-          <CardTitle>{todo.text || todo.name}</CardTitle>
-          <CardSubtitle>{todo.text || todo.name}</CardSubtitle>
+          <CardTitle>{todo.name}</CardTitle>
+          <CardSubtitle>{todo.category}</CardSubtitle>
           <Button color='danger' onClick={deleteTodo}>
             Delete
           </Button>

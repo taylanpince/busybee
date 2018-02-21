@@ -11,7 +11,7 @@ class CreateTodoForm extends React.Component {
     
     this.state = {
       name: '',
-      category: ''
+      category: 'home'
     }
     
     this.handleChange = this.handleChange.bind(this)
@@ -29,24 +29,38 @@ class CreateTodoForm extends React.Component {
   }
   
   handleSubmit(event) {
+    const {firebase} = this.props
+    
     console.log(this.state)
-    // return firebase.push('/todos', {
-    //   name: this.input.value,
-    //   dueDate:
-    //   done: false
-    // }).then(() => {
-    //   this.input.value = ''
-    // })
+
+    firebase.push('/todos', {
+      name: this.state.name,
+      category: this.state.category,
+      done: false
+    }).then(() => {
+      this.setState({
+        name: '',
+        category: 'home'
+      })
+    })
+
     event.preventDefault()
   }
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form>
         <FormGroup>
-          <Input type='text' name='name' placeholder='Get fresh batteries' value={this.state.name} onChange={this.handleChange} />
+          <Input type="text" name="name" placeholder="Get fresh batteries" value={this.state.name} onChange={this.handleChange} />
         </FormGroup>
-        <Button>
+        <FormGroup>
+          <Input type="select" name="category" value={this.state.category} onChange={this.handleChange}>
+            <option value="home">Home</option>
+            <option value="work">Work</option>
+            <option value="projects">Projects</option>
+          </Input>
+        </FormGroup>
+        <Button onClick={this.handleSubmit}>
           Add
         </Button>
       </Form>
