@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.0.0",
     "firebase": "^4.10.0",
-    "font-awesome": "^4.7.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "react-redux-firebase": "^2.0.4",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
-    "semantic-ui-css": "^2.3.0",
-    "semantic-ui-react": "^0.78.2"
+    "reactstrap": "^5.0.0-beta",
+    "redux": "^3.7.2",
   },
   "scripts": {
     "start": "react-scripts start",
