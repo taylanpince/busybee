@@ -1,7 +1,7 @@
 import React from 'react'
 import { firebase } from 'react-redux-firebase'
 
-import { Button, Form, FormGroup, Input } from 'reactstrap'
+import { Button, Form, FormGroup, Input, Col, Label, Row } from 'reactstrap'
 
 
 class CreateTodoForm extends React.Component {
@@ -10,8 +10,10 @@ class CreateTodoForm extends React.Component {
     super(props)
     
     this.state = {
-      name: '',
-      category: 'home'
+      title: '',
+      status: '',
+      description: '',
+      dueDate: ''
     }
     
     this.handleChange = this.handleChange.bind(this)
@@ -34,13 +36,16 @@ class CreateTodoForm extends React.Component {
     console.log(this.state)
 
     firebase.push('/todos', {
-      name: this.state.name,
-      category: this.state.category,
-      done: false
+      title: this.state.title,
+      status: this.state.status,
+      description: this.state.description,
+      dueDate: this.state.dueDate
     }).then(() => {
       this.setState({
-        name: '',
-        category: 'home'
+        title: '',
+        status: '',
+        description: '',
+        dueDate: ''
       })
     })
 
@@ -50,19 +55,41 @@ class CreateTodoForm extends React.Component {
   render() {
     return (
       <Form>
-        <FormGroup>
-          <Input type="text" name="name" placeholder="Get fresh batteries" value={this.state.name} onChange={this.handleChange} />
+        <FormGroup row>
+          <Label for="title" sm={2}>Title</Label>
+          <Col sm={8}>
+            <Input type="text" name="title" placeholder="Title" value={this.state.title} onChange={this.handleChange} />
+          </Col>
         </FormGroup>
-        <FormGroup>
-          <Input type="select" name="category" value={this.state.category} onChange={this.handleChange}>
-            <option value="home">Home</option>
-            <option value="work">Work</option>
-            <option value="projects">Projects</option>
-          </Input>
+        <FormGroup row>
+          <Label for="description" sm={2}>Description</Label>
+          <Col sm={8}>
+            <Input type="textarea" name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
+          </Col>
         </FormGroup>
-        <Button onClick={this.handleSubmit}>
-          Add
-        </Button>
+        <FormGroup row>
+          <Label for="dueDate" sm={2}>Due Date</Label>
+          <Col sm={8}>
+            <Input type="date" name="dueDate" placeholder="Due Date" value={this.state.dueDate} onChange={this.handleChange} />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="status" sm={2}>Status</Label>
+          <Col sm={8}>
+            <Input type="select" name="status" value={this.state.status} onChange={this.handleChange}>
+              <option disabled>Status</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Waiting">Waiting</option>
+              <option value="Done">Done</option>
+            </Input>
+          </Col>
+        </FormGroup>
+      
+        <Row>
+          <Col sm={{ size: 'auto', offset: 2 }}>
+            <Button onClick={this.handleSubmit}>Add</Button>
+          </Col>
+        </Row>
       </Form>
     )
   }

@@ -1,38 +1,41 @@
 import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import {
-  firebaseConnect,
-  isLoaded,
-  isEmpty
-} from 'react-redux-firebase'
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 
 import Todo from './todo'
 import CreateTodoForm from './createForm.js'
 
-import { Container } from 'reactstrap'
+import { CardDeck, Row, Col } from 'reactstrap'
 
 
 const TodoList = ({ firebase, todos }) => {
+  
+  let emptyState = null
+  let todoItems = null
+
+  if (!isLoaded(todos)) {
+    emptyState = 'Loading'
+  } else if (isEmpty(todos)) {
+    emptyState = 'You are all done, have a nice day!'
+  } else {
+    todoItems = (
+      Object.keys(todos).map((key) => (
+        <Todo key={key} id={key} todo={todos[key]} />
+      ))
+    )
+  }
 
   return (
-    <Container>
-      <h2>BusyBee</h2>
-
-      <div>
-        {
-          !isLoaded(todos)
-            ? 'Loading'
-            : isEmpty(todos)
-              ? 'Nothing to do, have a nice day!'
-              : Object.keys(todos).map((key) => (
-                <Todo key={key} id={key} todo={todos[key]} />
-              ))
-        }
-      </div>
+    <Row>
+      <Col sm={{ size: 8, offset: 1 }}>
+      {emptyState}
+  
+      <CardDeck>{todoItems}</CardDeck>
 
       <CreateTodoForm />
-    </Container>
+      </Col>
+    </Row>
   )
 }
 
