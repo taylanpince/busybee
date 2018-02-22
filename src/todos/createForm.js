@@ -99,13 +99,13 @@ class CreateTodoForm extends React.Component {
             <FormGroup row>
               <Label for="title" sm={3}>Title</Label>
               <Col sm={9}>
-                <Input type="text" name="title" placeholder="Title" value={this.state.title} valid={this.state.titleValid} onChange={this.handleChange} />
+                <Input type="text" name="title" placeholder="Buy new batteries" value={this.state.title} valid={this.state.titleValid} onChange={this.handleChange} />
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label for="description" sm={3}>Description</Label>
               <Col sm={9}>
-                <Input type="textarea" name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
+                <Input type="textarea" name="description" placeholder="Need AAA for lamp" value={this.state.description} onChange={this.handleChange} />
               </Col>
             </FormGroup>
             <FormGroup row>

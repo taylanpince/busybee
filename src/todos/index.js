@@ -11,6 +11,7 @@ import { Navbar, NavbarBrand, Nav, Button, Container, NavItem, Row, Col, CardCol
 
 import 'font-awesome/css/font-awesome.min.css'
 import '../App.css'
+import { default as Logo } from '../logo.js'
 
 
 class TodoList extends React.Component {
@@ -67,7 +68,10 @@ class TodoList extends React.Component {
         <CreateTodoForm onRef={ref => (this.createTodoForm = ref)} />
 
         <Navbar>
-          <NavbarBrand>BusyBee</NavbarBrand>
+          <NavbarBrand>
+            <Logo />
+            <p className="logo-name">BusyBee</p>
+          </NavbarBrand>
           <Nav navbar>
             <NavItem>
               <Button onClick={this.toggleFormModal} color="primary">New Todo</Button>
