@@ -4,6 +4,8 @@ import { firebase } from 'react-redux-firebase'
 import { Button, Form, FormGroup, Input, Col, Label, Modal, 
          ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 
+import STATUS_TYPES from './statusTypes'
+
 
 class CreateTodoForm extends React.Component {
 
@@ -13,7 +15,7 @@ class CreateTodoForm extends React.Component {
     this.state = {
       title: '',
       titleValid: null,
-      status: '',
+      status: STATUS_TYPES.IN_PROGRESS,
       description: '',
       dueDate: '',
       modalOpen: false
@@ -43,11 +45,11 @@ class CreateTodoForm extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     
-    if (name == "title" && !this.state.titleValid && value.length >= 2) {
+    if (name === "title" && !this.state.titleValid && value.length >= 2) {
       this.setState({
         titleValid: true
       })
-    } else if (name == "title" && this.state.titleValid && value.length < 2) {
+    } else if (name === "title" && this.state.titleValid && value.length < 2) {
       this.setState({
         titleValid: false
       })
@@ -78,7 +80,7 @@ class CreateTodoForm extends React.Component {
       this.setState({
         title: '',
         titleValid: null,
-        status: '',
+        status: STATUS_TYPES.IN_PROGRESS,
         description: '',
         dueDate: '',
         modalOpen: false
@@ -117,9 +119,9 @@ class CreateTodoForm extends React.Component {
               <Col sm={9}>
                 <Input type="select" name="status" value={this.state.status} onChange={this.handleChange}>
                   <option disabled>Status</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Waiting">Waiting</option>
-                  <option value="Done">Done</option>
+                  <option value={STATUS_TYPES.IN_PROGRESS}>In Progress</option>
+                  <option value={STATUS_TYPES.IN_QUEUE}>In Queue</option>
+                  <option value={STATUS_TYPES.COMPLETED}>Completed</option>
                 </Input>
               </Col>
             </FormGroup>

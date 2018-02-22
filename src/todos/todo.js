@@ -5,6 +5,8 @@ import { firebase } from 'react-redux-firebase'
 import { Card, CardHeader, CardText, CardBody, CardLink, CardFooter,
          CardSubtitle, Input, Row, Col } from 'reactstrap'
 
+import STATUS_TYPES from './statusTypes'
+
 
 class Todo extends Component {
   static propTypes = {
@@ -28,7 +30,7 @@ class Todo extends Component {
     }
 
     return (
-      <Card>
+      <Card className="floating-card">
         <CardHeader>{todo.title}</CardHeader>
         <CardBody>
           <CardSubtitle>{todo.dueDate}</CardSubtitle>
@@ -38,9 +40,9 @@ class Todo extends Component {
             <Col sm={9}>
               <Input type="select" bsSize="sm" name="status" value={todo.status} onChange={updateTodoStatus}>
                 <option disabled>Status</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Waiting">Waiting</option>
-                <option value="Done">Done</option>
+                <option value={STATUS_TYPES.IN_PROGRESS}>In Progress</option>
+                <option value={STATUS_TYPES.IN_QUEUE}>In Queue</option>
+                <option value={STATUS_TYPES.COMPLETED}>Completed</option>
               </Input>
             </Col>
           </Row>

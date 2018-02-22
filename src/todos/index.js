@@ -7,13 +7,16 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import Todo from './todo'
 import CreateTodoForm from './createForm.js'
 
-import { CardColumns, Navbar, NavbarBrand, Nav, Button, Container, NavItem } from 'reactstrap'
+import { Navbar, NavbarBrand, Nav, Button, Container, NavItem, Row, Col } from 'reactstrap'
+
+import 'font-awesome/css/font-awesome.min.css'
+import '../App.css'
 
 
 class TodoList extends React.Component {
   
   static propTypes = {
-    todos: PropTypes.object,
+    todos: PropTypes.array,
     firebase: PropTypes.object.isRequired
   }
   
@@ -35,13 +38,25 @@ class TodoList extends React.Component {
     let todoItems = null
 
     if (!isLoaded(todos)) {
-      emptyState = 'Loading'
+      emptyState = (
+        <Row className="loading-state">
+            <Col sm={12} className="text-center">
+                <span className="fa fa-spinner fa-pulse fa-3x"></span>
+            </Col>
+        </Row>
+      )
     } else if (isEmpty(todos)) {
-      emptyState = 'You are all done, have a nice day!'
+      emptyState = (
+        <Row className="loading-state">
+            <Col sm={12} className="text-center">
+                <p>You are all done, have a nice day!</p>
+            </Col>
+        </Row>
+      )
     } else {
       todoItems = (
-        Object.keys(todos).map((key) => (
-          <Todo key={key} id={key} todo={todos[key]} />
+        todos.map((todo) => (
+          <Todo key={todo.key} id={todo.key} todo={todo.value} />
         ))
       )
     }
@@ -62,7 +77,7 @@ class TodoList extends React.Component {
       
         {emptyState}
 
-        <CardColumns>{todoItems}</CardColumns>
+        {todoItems}
 
       </Container>
     )
@@ -70,10 +85,10 @@ class TodoList extends React.Component {
 }
 
 export default compose(
-  firebaseConnect(['todos']),
+  firebaseConnect(['todos#orderByChild=status']),
   connect(
     ({ firebase }) => ({
-      todos: firebase.data.todos,
+      todos: firebase.ordered.todos,
     })
   )
 )(TodoList)
