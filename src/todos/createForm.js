@@ -1,7 +1,8 @@
 import React from 'react'
 import { firebase } from 'react-redux-firebase'
 
-import { Button, Form, FormGroup, Input, Col, Label, Row } from 'reactstrap'
+import { Button, Form, FormGroup, Input, Col, Label, Modal, 
+         ModalHeader, ModalFooter, ModalBody } from 'reactstrap'
 
 
 class CreateTodoForm extends React.Component {
@@ -11,19 +12,46 @@ class CreateTodoForm extends React.Component {
     
     this.state = {
       title: '',
+      titleValid: null,
       status: '',
       description: '',
-      dueDate: ''
+      dueDate: '',
+      modalOpen: false
     }
     
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+  
+  componentDidMount() {
+    this.props.onRef(this)
+  }
+
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+  
+  toggleModal() {
+    this.setState({
+      modalOpen: !this.state.modalOpen
+    })
   }
   
   handleChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
+    
+    if (name == "title" && !this.state.titleValid && value.length >= 2) {
+      this.setState({
+        titleValid: true
+      })
+    } else if (name == "title" && this.state.titleValid && value.length < 2) {
+      this.setState({
+        titleValid: false
+      })
+    }
 
     this.setState({
       [name]: value
@@ -31,9 +59,15 @@ class CreateTodoForm extends React.Component {
   }
   
   handleSubmit(event) {
+    if (this.state.title.length < 2) {
+      this.setState({
+        titleValid: false
+      })
+      
+      return
+    }
+
     const {firebase} = this.props
-    
-    console.log(this.state)
 
     firebase.push('/todos', {
       title: this.state.title,
@@ -43,9 +77,11 @@ class CreateTodoForm extends React.Component {
     }).then(() => {
       this.setState({
         title: '',
+        titleValid: null,
         status: '',
         description: '',
-        dueDate: ''
+        dueDate: '',
+        modalOpen: false
       })
     })
 
@@ -54,43 +90,46 @@ class CreateTodoForm extends React.Component {
 
   render() {
     return (
-      <Form>
-        <FormGroup row>
-          <Label for="title" sm={2}>Title</Label>
-          <Col sm={8}>
-            <Input type="text" name="title" placeholder="Title" value={this.state.title} onChange={this.handleChange} />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="description" sm={2}>Description</Label>
-          <Col sm={8}>
-            <Input type="textarea" name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="dueDate" sm={2}>Due Date</Label>
-          <Col sm={8}>
-            <Input type="date" name="dueDate" placeholder="Due Date" value={this.state.dueDate} onChange={this.handleChange} />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="status" sm={2}>Status</Label>
-          <Col sm={8}>
-            <Input type="select" name="status" value={this.state.status} onChange={this.handleChange}>
-              <option disabled>Status</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Waiting">Waiting</option>
-              <option value="Done">Done</option>
-            </Input>
-          </Col>
-        </FormGroup>
-      
-        <Row>
-          <Col sm={{ size: 'auto', offset: 2 }}>
-            <Button onClick={this.handleSubmit}>Add</Button>
-          </Col>
-        </Row>
-      </Form>
+      <Modal isOpen={this.state.modalOpen} toggle={this.toggleModal}>
+        <ModalHeader>Create New Todo</ModalHeader>
+        <ModalBody>
+          <Form>
+            <FormGroup row>
+              <Label for="title" sm={3}>Title</Label>
+              <Col sm={9}>
+                <Input type="text" name="title" placeholder="Title" value={this.state.title} valid={this.state.titleValid} onChange={this.handleChange} />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="description" sm={3}>Description</Label>
+              <Col sm={9}>
+                <Input type="textarea" name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="dueDate" sm={3}>Due Date</Label>
+              <Col sm={9}>
+                <Input type="date" name="dueDate" placeholder="Due Date" value={this.state.dueDate} onChange={this.handleChange} />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="status" sm={3}>Status</Label>
+              <Col sm={9}>
+                <Input type="select" name="status" value={this.state.status} onChange={this.handleChange}>
+                  <option disabled>Status</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Waiting">Waiting</option>
+                  <option value="Done">Done</option>
+                </Input>
+              </Col>
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={this.toggleModal} color="secondary">Cancel</Button>
+          <Button onClick={this.handleSubmit} color="primary">Add</Button>
+        </ModalFooter>
+      </Modal>
     )
   }
 }

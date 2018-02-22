@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { firebase } from 'react-redux-firebase'
 
-import { Card, CardHeader, CardText, CardBody, CardLink, CardFooter, FormGroup, Label,
-         CardTitle, CardSubtitle, Button, Input, Row, Col } from 'reactstrap'
+import { Card, CardHeader, CardText, CardBody, CardLink, CardFooter,
+         CardSubtitle, Input, Row, Col } from 'reactstrap'
 
 
 class Todo extends Component {
@@ -33,7 +33,7 @@ class Todo extends Component {
         <CardBody>
           <CardSubtitle>{todo.dueDate}</CardSubtitle>
           <CardText>{todo.description}</CardText>
-      
+    
           <Row>
             <Col sm={9}>
               <Input type="select" bsSize="sm" name="status" value={todo.status} onChange={updateTodoStatus}>
