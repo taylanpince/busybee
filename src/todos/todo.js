@@ -28,9 +28,25 @@ class Todo extends Component {
       
       event.preventDefault()
     }
+    
+    let cardColor = 'primary'
+    
+    switch (todo.status) {
+    case STATUS_TYPES.IN_PROGRESS:
+      cardColor = 'danger'
+      break
+    case STATUS_TYPES.IN_QUEUE:
+      cardColor = 'warning'
+      break;
+    case STATUS_TYPES.COMPLETED:
+      cardColor = 'secondary'
+      break;
+    default:
+      break
+    }
 
     return (
-      <Card className="floating-card">
+      <Card outline color={cardColor}>
         <CardHeader>{todo.title}</CardHeader>
         <CardBody>
           <CardSubtitle>{todo.dueDate}</CardSubtitle>

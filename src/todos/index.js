@@ -7,7 +7,7 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import Todo from './todo'
 import CreateTodoForm from './createForm.js'
 
-import { Navbar, NavbarBrand, Nav, Button, Container, NavItem, Row, Col } from 'reactstrap'
+import { Navbar, NavbarBrand, Nav, Button, Container, NavItem, Row, Col, CardColumns } from 'reactstrap'
 
 import 'font-awesome/css/font-awesome.min.css'
 import '../App.css'
@@ -77,7 +77,7 @@ class TodoList extends React.Component {
       
         {emptyState}
 
-        {todoItems}
+        <CardColumns>{todoItems}</CardColumns>
 
       </Container>
     )
